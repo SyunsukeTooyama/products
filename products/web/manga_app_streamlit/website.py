@@ -129,7 +129,12 @@ with tab1:
         option=stl.selectbox('絞り込み要素',('すべて','作品名','作者名','アプリ名'),key='filter_elem')
 
     if stl.session_state.filter_elem=='すべて':
-        df=df
+        if stl.session_state.keyword=='':
+            df=df
+        else:
+            df1=df[df['title'].str.contains(stl.session_state.keyword)]
+            df2=df[df['author'].str.contains(stl.session_state.keyword)]
+            df=pd.concat([df1,df2],axis=0)
     elif stl.session_state.filter_elem=='作品名':
         df=df[df['title'].str.contains(stl.session_state.keyword)]
 
