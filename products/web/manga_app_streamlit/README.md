@@ -34,11 +34,10 @@
 <h3>2. データベース</h3>
 <dl><dt>MySQL</dt></dl>
 
-## 使用方法
-必要ライブラリをインストールし、
-`python scraping.py`でスクレイピングをして`streamlit run website.py`でWebサイトを起動する。
-
 ## デモ
 
 https://github.com/SyunsukeTooyama/products/assets/138125489/6f743252-4bf8-4d7c-869c-af27b203ac9d
 
+## 使用方法
+必要ライブラリをインストールし、
+`python scraping.py`でスクレイピングをして`streamlit run website.py`でWebサイトを起動する。
