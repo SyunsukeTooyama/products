@@ -7,4 +7,4 @@
 
 # GIF
 
-![Uploading wavefunc.gif…]()
+![wavefunc](https://github.com/SyunsukeTooyama/products/assets/138125489/8ac989af-4ed5-4820-80dd-9cabb32ce0c3)
