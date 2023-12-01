@@ -8,7 +8,7 @@ bit_othello.pyはビットボードと呼ばれる方法を用い、配列の方
 + python
   + pygame
 
-## 外観
+## デモ
 
 https://github.com/SyunsukeTooyama/products/assets/138125489/438799b6-6661-4a50-8180-4901a358ddde
 
