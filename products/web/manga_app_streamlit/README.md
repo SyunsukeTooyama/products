@@ -38,4 +38,4 @@
 必要ライブラリをインストールし、
 `python scraping.py`でスクレイピングをして`streamlit run website.py`でWebサイトを起動する。
 
-## ページ
+## デモ
