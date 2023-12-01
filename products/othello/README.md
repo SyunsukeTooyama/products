@@ -14,4 +14,4 @@ bit_othello.pyはビットボードと呼ばれる方法を用い、配列の方
 pip install pygame
 pip install numpy
 ```
-で必要ライブラリをインストールし起動します。
+で必要ライブラリをインストールし`python othello_n.py`で起動します。
