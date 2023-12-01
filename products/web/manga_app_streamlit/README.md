@@ -41,3 +41,13 @@ https://github.com/SyunsukeTooyama/products/assets/138125489/6f743252-4bf8-4d7c-
 ## 使用方法
 必要ライブラリをインストールし、
 `python scraping.py`でスクレイピングをして`streamlit run website.py`でWebサイトを起動する。
+
+## 機能
++ 蔵書の検索/絞り込み　（作品名/著者名/アプリ名）
++ 並び替え
++ 表サイズ変更
++ ブックマーク
++ 簡易ログイン
++ バグ報告
+
+## 改善点
