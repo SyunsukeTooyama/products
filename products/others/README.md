@@ -15,7 +15,7 @@
 iℏ\frac{\partial}{\partial t}\psi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\psi
 ```
 定常状態では
-$\psi=\phi\chi$
+$\psi (x,t)=\phi (x)\chi (t)$
 として
 ```math
 E\phi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\phi
