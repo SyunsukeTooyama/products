@@ -27,7 +27,7 @@ $\phi(x=0,x=L)=0$
 $\int^\infty_{-\infty} \phi^* \phi dx=1$
 を考えて
 ```math
-\phi=\frac{1}{\sqrt{L}}sin(kx)
+\phi=\frac{1}{\sqrt{L}}sin(\frac{n\pi}{L}x)
 ```
 
 # percolation.c
