@@ -1,13 +1,19 @@
 # wavefunc.py
 無限井戸型ポテンシャルの定常状態の波動関数のアニメーションを表示するプログラムです。
+授業で習った量子力学の式で表される状態が、どのように時間発展するのか興味がわいたため自習していたPythonを用いて可視化してみました。
 
 ## 環境
 + python
   + matplotlib
 
 ## GIF
-
 ![wavefunc](https://github.com/SyunsukeTooyama/products/assets/138125489/8ac989af-4ed5-4820-80dd-9cabb32ce0c3)
+
+## 導出
+定常状態の１次元Schrödinger方程式
+$$
+E\phi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\phi
+$$
 
 # percolation.c
 パーコレーション判別プログラムとは、あるサイズの格子点上にある確率に沿って点を打ち、左右または上下に点が離接している点をつないでいったときに、設定したサイズの左右または上下にひとつながりに点が結べたときパーコレートしていると判別します。
