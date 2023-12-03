@@ -29,12 +29,9 @@ grid size n = 400, probability = 0.7
 ## 使用方法
 `percolation.c`をコンパイルして実行するとターミナルに
 ```terminal
-Input seed of random number
-
-input grid size n
-
-Input probability
-
+Input seed of random number //シード値の設定（なんでも良い整数値）
+input grid size n //一辺当たりの格子点の数（任意の自然数値<=400くらい）
+Input probability //点を打つ確率（任意の浮動小数点値　0.6付近が閾値）
 ```
 という文が表示されるのでそれぞれお好きな数字を入力するとgnuplotのウィンドウが現れ、パーコレートしている場合はその道筋が色付きで表示されます。また、ターミナルに横方向では`horizontal percolation!!`、縦方向では`vertical percolation!!`と表示されます。
 
