@@ -10,8 +10,11 @@
 ![wavefunc](https://github.com/SyunsukeTooyama/products/assets/138125489/8ac989af-4ed5-4820-80dd-9cabb32ce0c3)
 
 ## 導出
-定常状態の１次元Schrödinger方程式
-
+１次元Schrödinger方程式
+```math
+iℏ\frac{\parial}{\partial t}\psi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\psi
+```
+定常状態では
 ```math
 E\phi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\phi
 ```
@@ -47,6 +50,9 @@ iℏ\frac{\partial}{\partial t}\chi=E\chi
 ```math
 \chi=\chi (0)e^{-i\frac{E}{ℏ}t}
 ```
+$(簡略化のため\chi(0)=0とする)$
+
+
 
 # percolation.c
 パーコレーション判別プログラムとは、あるサイズの格子点上にある確率に沿って点を打ち、左右または上下に点が離接している点をつないでいったときに、設定したサイズの左右または上下にひとつながりに点が結べたときパーコレートしていると判別します。
