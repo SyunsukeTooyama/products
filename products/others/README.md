@@ -12,9 +12,11 @@
 ## 導出
 １次元Schrödinger方程式
 ```math
-iℏ\frac{\parial}{\partial t}\psi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\psi
+iℏ\frac{\partial}{\partial t}\psi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\psi
 ```
 定常状態では
+$\psi=\phi\chi$
+として
 ```math
 E\phi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\phi
 ```
