@@ -15,6 +15,8 @@
 ```math
 E\phi=-\frac{ℏ^2}{2m}\frac{\partial^2}{\partial x^2}\phi
 ```
+$(A,B=Const.)$
+
 $k=\frac{\sqrt{2mE}}{ℏ}$として
 
 ```math
@@ -28,6 +30,12 @@ $\int^\infty_{-\infty} \phi^* \phi dx=1$
 を考えて
 ```math
 \phi=\frac{1}{\sqrt{L}}sin(\frac{n\pi}{L}x)
+```
+よって
+$k=\frac{\sqrt{2mE}}{ℏ}=\frac{n\pi}{L}$
+より
+```math
+E=\frac{n^2ℏ^2\pi^2}{2mL^2}
 ```
 
 # percolation.c
