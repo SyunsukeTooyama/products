@@ -55,6 +55,7 @@ iℏ\frac{\partial}{\partial t}\chi=E\chi
 $(簡略化のため\chi(0)=0とする)$
 
 よって
+
 ```math
 \psi=\chi (0)e^{-i\frac{E}{ℏ}t} \frac{1}{\sqrt{L}}sin(\frac{n\pi}{L}x)
 ```
