@@ -24,7 +24,7 @@ $k=\frac{\sqrt{2mE}}{ℏ}$として
 境界条件
 $\phi(x=0,x=L)=0$
 、規格化
-$\int^\infty_{-\infty} \phi^* \phi=1$
+$\int^\infty_{-\infty}dx \phi^* \phi=1$
 を考えて
 ```math
 \phi=\frac{1}{\sqrt{L}}sin(kx)
