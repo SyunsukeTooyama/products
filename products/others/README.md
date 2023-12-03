@@ -31,7 +31,7 @@ $\int^\infty_{-\infty} \phi^* \phi dx=1$
 ```math
 \phi=\frac{1}{\sqrt{L}}sin(\frac{n\pi}{L}x)
 ```
-$nは自然数$
+$(nは自然数)$
 
 よって
 $k=\frac{\sqrt{2mE}}{ℏ}=\frac{n\pi}{L}$
