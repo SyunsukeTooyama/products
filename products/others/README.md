@@ -20,8 +20,7 @@
 ## デモ
 ![スクリーンショット 2023-12-03 131912](https://github.com/SyunsukeTooyama/products/assets/138125489/ac8aa77b-a301-4a34-bb98-6225f9a4c11b)
 
-grid size n = 400
-probability = 0.7
+grid size n = 400, probability = 0.7
 
 サイズはメモリの関係か400ぐらいが限界です。
 
