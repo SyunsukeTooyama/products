@@ -41,7 +41,7 @@ E=\frac{n^2ℏ^2\pi^2}{2mL^2}
 ```
 また時間部分は
 ```math
--iℏ\frac{\partial}{partial t}\chi=E\chi
+-iℏ\frac{\partial}{\partial t}\chi=E\chi
 ```
 より
 ```math
