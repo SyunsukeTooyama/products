@@ -84,8 +84,8 @@ class Board:
                 self.rects[i][k][1] = 60.+k*75.
     
     def draw_screen(self):
-        self.screen.fill('gray') #background color
-        pygame.draw.rect(self.screen, 'white', [340, 60, 600, 600], 0) #set stage
+        self.screen.fill('gray') # background color
+        pygame.draw.rect(self.screen, 'white', [340, 60, 600, 600], 0) # set board
         for i in range(7):    
             pygame.draw.line(self.screen,'black',[340+75*(i+1),60],[340+75*(i+1),660],2)
             pygame.draw.line(self.screen,'black',[340,60+75*(i+1)],[940,60+75*(i+1)],2)
@@ -93,13 +93,6 @@ class Board:
 class Game:
     def __init__(self, turn=0):
         self.turn = turn
-        self.pieces = []
-        self.king = []
-        self.queen = []
-        self.rooks = []
-        self.bishops = []
-        self.kight = []
-        self.pawns = []
 
     def initialize_game(self):
         alps = list(string.ascii_lowercase)[0:8]
@@ -109,26 +102,36 @@ class Game:
             else:
                 color_sign = -1
 
-
+            # pawn
             for alp in alps[0:8]:
                 self.pieces.append(Pawn(color,(f"{alp}{4.5 + 2.5*color_sign}")))
 
+            # knight bishop rook
             for column_num in [-1,+1]:
                 self.pieces.append(Knight(color,(f"{alps[int(3.5 + 1.5*column_num)]}{4.5 + 3.5*color_sign}")))
                 self.pieces.append(Bishop(color,(f"{alps[int(3.5 + 2.5*column_num)]}{4.5 + 3.5*color_sign}")))
                 self.pieces.append(Rook(color,(f"{alps[int(3.5 + 3.5*column_num)]}{4.5 + 3.5*color_sign}")))
 
+            # queen
             self.pieces.append(Queen(color,(f"d{4.5 + 3.5*color_sign}")))
+            
+            # king
             self.pieces.append(King(color,(f"e{4.5 + 3.5*color_sign}")))
 
-        print(self.pieces)
         return self.pieces
+    
+    def end_game(self):
+        pass
+
+    def draw_game(self):
+        pass
 
 def main():
     board = Board()
     pawn = Pawn("black",("c3"))
     game = Game()
     pieces = game.initialize_game()
+
     # draw window
     pygame.init()
     running = True 
