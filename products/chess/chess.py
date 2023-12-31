@@ -32,6 +32,9 @@ class Piece:
     def draw_piece(self,screen):      
         screen.blit(self.piece_img,(340.+self.location_number[0]*75,60.+(7-self.location_number[1])*75))
 
+    def choose_piece(self):
+        pass
+
 class King(Piece):
     def __init__(self,player,location):
         super().__init__(player,location)
@@ -94,10 +97,13 @@ class Board:
     def draw_screen(self):
         self.screen.fill('gray') # background color
         pygame.draw.rect(self.screen, 'white', [340, 60, 600, 600], 0) # set board
-        for i in range(7):    
-            pygame.draw.line(self.screen,'black',[340+75*(i+1),60],[340+75*(i+1),660],2)
-            pygame.draw.line(self.screen,'black',[340,60+75*(i+1)],[940,60+75*(i+1)],2)
-
+        
+        for i in range(8):
+            for j in range(8):
+                if (i+j)%2==0:
+                    pygame.draw.rect(self.screen, "white", (340+75*i,60+75*j,75,75)) 
+                else:
+                    pygame.draw.rect(self.screen, "brown", (340+75*i,60+75*j,75,75)) 
 class Game:
     def __init__(self, turn = 0):
         self.turn = turn
@@ -144,7 +150,7 @@ class Game:
             }
 
             self.pieces.append(pieces_dict)
-        print(self.pieces)
+
         return self.pieces
     
     def end_game(self):
