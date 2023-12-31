@@ -10,13 +10,15 @@ class Piece:
         self.player = player
         self.location = location
         self.name = ""
+        self.column_dict = {"a": 0, "b": 1, "c": 2, "d":3, "e": 4, "f": 5, "g": 6, "h": 7}
         self.location_number = self.location_tuple()
         self.move_value = [0]
+        
 
-    def location_tuple(self):
-        column_dict = {"a": 0, "b": 1, "c": 2, "d":3, "e": 4, "f": 5, "g": 6, "h": 7}
-        column = column_dict[self.location[0]]
+    def location_tuple(self):        
+        column = self.column_dict[self.location[0]]
         row = int(self.location[1]) - 1 
+
         return (column, row)
 
     def set_piece_img(self):
@@ -24,16 +26,26 @@ class Piece:
         self.piece_img = pygame.transform.scale(self.piece_img, (75, 75))
         if self.player == "black":
             self.piece_img = pygame.transform.rotate(self.piece_img, 180)
+        
         return self.piece_img
 
     def move_piece(self):
         pass
 
-    def draw_piece(self,screen):      
-        screen.blit(self.piece_img,(340.+self.location_number[0]*75,60.+(7-self.location_number[1])*75))
+    def draw_piece(self, screen):      
+        screen.blit(self.piece_img,(340. + self.location_number[0] * 75,60. + (7-self.location_number[1]) * 75))
 
-    def choose_piece(self):
-        pass
+    def choose_piece(self, board):
+        for i in range(8): 
+            for k in range(8):
+                if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
+                    if self.location_number == (i,k):
+                        print(f"{self.name}:{self.value_to_key(i)}{k + 1}")
+
+    def value_to_key(self,value):
+        for item in self.column_dict.items():
+            if item[1] == value:
+                return item[0]            
 
 class King(Piece):
     def __init__(self,player,location):
@@ -91,19 +103,24 @@ class Board:
         self.rects = np.zeros([9,9,2])
         for i in range(9):
             for k in range(9):
-                self.rects[i][k][0] = 340.+i*75.
-                self.rects[i][k][1] = 60.+k*75.
+                self.rects[i][k][0] = 340. + i * 75.
+                self.rects[i][k][1] = 60. + k * 75.
     
     def draw_screen(self):
-        self.screen.fill('gray') # background color
-        pygame.draw.rect(self.screen, 'white', [340, 60, 600, 600], 0) # set board
+        # background color
+        self.screen.fill('gray') 
+
+        # set board
+        pygame.draw.rect(self.screen, 'black', [340-1, 60-1, 600+2, 600+2], 1) # set board
         
+        # coloring board
         for i in range(8):
             for j in range(8):
                 if (i+j)%2==0:
                     pygame.draw.rect(self.screen, "white", (340+75*i,60+75*j,75,75)) 
                 else:
                     pygame.draw.rect(self.screen, "brown", (340+75*i,60+75*j,75,75)) 
+
 class Game:
     def __init__(self, turn = 0):
         self.turn = turn
@@ -178,6 +195,12 @@ def main():
             if event.type == pygame.QUIT: 
                 running = False
         
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for piece in pieces:
+                    for vals in piece.values():
+                        for val in vals:
+                            val.choose_piece(board)
+
         board.draw_screen()
 
         for piece in pieces:
