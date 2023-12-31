@@ -11,6 +11,7 @@ class Piece:
         self.location = location
         self.name = ""
         self.location_number = self.location_tuple()
+        self.move_value = [0]
 
     def location_tuple(self):
         column_dict = {"a": 0, "b": 1, "c": 2, "d":3, "e": 4, "f": 5, "g": 6, "h": 7}
@@ -37,6 +38,7 @@ class King(Piece):
         self.name = "king"
         self.value = 100
         self.piece_img = self.set_piece_img()
+        self.move_value = [-9, -8, -7, -1, 1, 7, 8, 9]
 
 class Queen(Piece):
     def __init__(self,player,location):
@@ -44,6 +46,8 @@ class Queen(Piece):
         self.name = "queen"
         self.value = 9
         self.piece_img = self.set_piece_img()
+        self.move_value = []
+        self.move_value = list(range(1,8)) + list(range(-1,-8,-1)) + list(range(8, 64, 8)) + list(range(-8, -64, -8)) +  list(range(9, 72, 9)) + list(range(-9, -72, -9)) + list(range(7, 56, 7)) + list(range(-7, -56, -7))
 
 class Rook(Piece):
     def __init__(self,player,location):
@@ -51,6 +55,7 @@ class Rook(Piece):
         self.name = "rook"
         self.value = 5
         self.piece_img = self.set_piece_img()
+        self.move_value = list(range(1,8)) + list(range(-1,-8,-1)) + list(range(8, 64, 8)) + list(range(-8, -64, -8))
 
 class Bishop(Piece):
     def __init__(self,player,location):
@@ -58,6 +63,8 @@ class Bishop(Piece):
         self.name = "bishop"
         self.value = 3
         self.piece_img = self.set_piece_img()
+        self.move_value = list(range(9, 72, 9)) + list(range(-9, -72, -9)) + list(range(7, 56, 7)) + list(range(-7, -56, -7))
+
 
 class Knight(Piece):
     def __init__(self,player,location):
@@ -65,6 +72,7 @@ class Knight(Piece):
         self.name = "knight"
         self.value = 3
         self.piece_img = self.set_piece_img()
+        self.move_value = [-17, -14, -10, -6, 6, 10, 14, 17]
 
 class Pawn(Piece):
     def __init__(self,player,location):
@@ -72,6 +80,7 @@ class Pawn(Piece):
         self.name = "pawn"
         self.value = 1 
         self.piece_img = self.set_piece_img()
+        self.move_value = [7, 8, 9, 16]
 
 # make board class
 class Board:
@@ -91,9 +100,9 @@ class Board:
             pygame.draw.line(self.screen,'black',[340,60+75*(i+1)],[940,60+75*(i+1)],2)
 
 class Game:
-    def __init__(self, turn=0):
+    def __init__(self, turn = 0):
         self.turn = turn
-
+        self.pieces = []
     def initialize_game(self):
         alps = list(string.ascii_lowercase)[0:8]
         for color in ["black","white"]:
@@ -128,7 +137,6 @@ class Game:
 
 def main():
     board = Board()
-    pawn = Pawn("black",("c3"))
     game = Game()
     pieces = game.initialize_game()
 
