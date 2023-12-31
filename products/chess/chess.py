@@ -65,7 +65,6 @@ class Bishop(Piece):
         self.piece_img = self.set_piece_img()
         self.move_value = list(range(9, 72, 9)) + list(range(-9, -72, -9)) + list(range(7, 56, 7)) + list(range(-7, -56, -7))
 
-
 class Knight(Piece):
     def __init__(self,player,location):
         super().__init__(player,location)
@@ -103,9 +102,17 @@ class Game:
     def __init__(self, turn = 0):
         self.turn = turn
         self.pieces = []
+
     def initialize_game(self):
         alps = list(string.ascii_lowercase)[0:8]
         for color in ["black","white"]:
+            king = []
+            queen = []
+            rook = []
+            bishop = []
+            knight = []
+            pawn = []
+
             if color == "black":
                 color_sign = +1
             else:
@@ -113,24 +120,41 @@ class Game:
 
             # pawn
             for alp in alps[0:8]:
-                self.pieces.append(Pawn(color,(f"{alp}{4.5 + 2.5*color_sign}")))
+                pawn.append(Pawn(color,(f"{alp}{4.5 + 2.5*color_sign}")))
 
             # knight bishop rook
             for column_num in [-1,+1]:
-                self.pieces.append(Knight(color,(f"{alps[int(3.5 + 1.5*column_num)]}{4.5 + 3.5*color_sign}")))
-                self.pieces.append(Bishop(color,(f"{alps[int(3.5 + 2.5*column_num)]}{4.5 + 3.5*color_sign}")))
-                self.pieces.append(Rook(color,(f"{alps[int(3.5 + 3.5*column_num)]}{4.5 + 3.5*color_sign}")))
+                knight.append(Knight(color,(f"{alps[int(3.5 + 1.5*column_num)]}{4.5 + 3.5*color_sign}")))
+                bishop.append(Bishop(color,(f"{alps[int(3.5 + 2.5*column_num)]}{4.5 + 3.5*color_sign}")))
+                rook.append(Rook(color,(f"{alps[int(3.5 + 3.5*column_num)]}{4.5 + 3.5*color_sign}")))
 
             # queen
-            self.pieces.append(Queen(color,(f"d{4.5 + 3.5*color_sign}")))
+            queen.append(Queen(color,(f"d{4.5 + 3.5*color_sign}")))
             
             # king
-            self.pieces.append(King(color,(f"e{4.5 + 3.5*color_sign}")))
+            king.append(King(color,(f"e{4.5 + 3.5*color_sign}")))
 
+            pieces_dict = {
+                "king":king,
+                "queen":queen,
+                "rook":rook,
+                "bishop":bishop,
+                "knight":knight,
+                "pawn":pawn
+            }
+
+            self.pieces.append(pieces_dict)
+        print(self.pieces)
         return self.pieces
     
     def end_game(self):
-        pass
+        for i in [0,1]:
+            if self.pieces[i]["king"]:
+                pass
+            elif i==0:
+                print("white win")
+            else:
+                print("black win")
 
     def draw_game(self):
         pass
@@ -151,9 +175,12 @@ def main():
         board.draw_screen()
 
         for piece in pieces:
-            piece.draw_piece(board.screen)
+            for vals in piece.values():
+                for val in vals: 
+                    val.draw_piece(board.screen)
         
         pygame.display.update()
+        game.end_game()
     pygame.quit()
 
 if __name__ == "__main__":
