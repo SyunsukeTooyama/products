@@ -28,11 +28,14 @@ class Piece:
         
         return self.piece_img
 
-    def move_piece(self):
-        pass
+    def move_piece(self, board):
+        for i in range(8): 
+            for k in range(8):
+                if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
+                    print(f"{self.name}:{self.value_to_key(i)}{8 - k}")
 
     def draw_piece(self, screen):   
-        screen.blit(self.piece_img,(340. + self.location_number[0] * 75,60. + (7-self.location_number[1]) * 75))
+        screen.blit(self.piece_img,(340. + self.location_number[0] * 75, 60. + (7-self.location_number[1]) * 75))
 
     def initialize_size(self):
         self.piece_img = self.set_piece_img()
@@ -43,10 +46,9 @@ class Piece:
             for k in range(8):
                 if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
                     if self.location_number == (i, 7 - k):
-                        
-                        print(f"{self.name}:{self.value_to_key(i)}{8 - k}")    
+                        print(f"{self.name}:{self.value_to_key(i)}{8 - k}")
                         self.piece_img = self.set_piece_img(piece_size = 90)
-
+                        return 1
 
     def value_to_key(self,value):
         for item in self.column_dict.items():
@@ -122,10 +124,10 @@ class Board:
         # coloring board
         for i in range(8):
             for j in range(8):
-                if (i+j)%2==0:
-                    pygame.draw.rect(self.screen, "white", (340+75*i,60+75*j,75,75)) 
+                if (i + j) % 2 == 0:
+                    pygame.draw.rect(self.screen, "white", (340 + 75 * i,60 + 75 * j, 75, 75)) 
                 else:
-                    pygame.draw.rect(self.screen, "brown", (340+75*i,60+75*j,75,75)) 
+                    pygame.draw.rect(self.screen, "brown", (340 + 75 * i,60 + 75 * j, 75, 75)) 
 
 class Game:
     def __init__(self, turn = 0):
@@ -192,6 +194,7 @@ def main():
     board = Board()
     game = Game()
     pieces = game.initialize_game()
+    chosen = False
 
     # draw window
     pygame.init()
@@ -202,10 +205,13 @@ def main():
                 running = False
         
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for piece in pieces:
-                    for vals in piece.values():
-                        for val in vals:
-                            val.choose_piece(board)
+                if chosen == False:
+                    for piece in pieces:
+                        for vals in piece.values():
+                            for val in vals:
+                                chosen = val.choose_piece(board)
+                else:
+                    val.move_piece(board)
 
         board.draw_screen()
 
