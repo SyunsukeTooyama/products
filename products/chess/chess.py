@@ -13,7 +13,6 @@ class Piece:
         self.column_dict = {"a": 0, "b": 1, "c": 2, "d":3, "e": 4, "f": 5, "g": 6, "h": 7}
         self.location_number = self.location_tuple()
         self.move_value = [0]
-        
 
     def location_tuple(self):        
         column = self.column_dict[self.location[0]]
@@ -32,16 +31,22 @@ class Piece:
     def move_piece(self):
         pass
 
-    def draw_piece(self, screen):      
+    def draw_piece(self, screen):   
         screen.blit(self.piece_img,(340. + self.location_number[0] * 75,60. + (7-self.location_number[1]) * 75))
 
+    def initialize_size(self):
+        self.piece_img = self.set_piece_img()
+
     def choose_piece(self, board):
+        self.initialize_size()
         for i in range(8): 
             for k in range(8):
                 if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
                     if self.location_number == (i, 7 - k):
-                        print(f"{self.name}:{self.value_to_key(i)}{8 - k}")
-                        self.piece_img = self.set_piece_img(piece_size=80)
+                        
+                        print(f"{self.name}:{self.value_to_key(i)}{8 - k}")    
+                        self.piece_img = self.set_piece_img(piece_size = 90)
+
 
     def value_to_key(self,value):
         for item in self.column_dict.items():
