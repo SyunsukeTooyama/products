@@ -21,9 +21,9 @@ class Piece:
 
         return (column, row)
 
-    def set_piece_img(self):
+    def set_piece_img(self,piece_size=75):
         self.piece_img = pygame.image.load(f"pieces/{self.player}_{self.name}.png")
-        self.piece_img = pygame.transform.scale(self.piece_img, (75, 75))
+        self.piece_img = pygame.transform.scale(self.piece_img, (piece_size, piece_size))
         if self.player == "black":
             self.piece_img = pygame.transform.rotate(self.piece_img, 180)
         
@@ -39,8 +39,9 @@ class Piece:
         for i in range(8): 
             for k in range(8):
                 if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
-                    if self.location_number == (i,k):
-                        print(f"{self.name}:{self.value_to_key(i)}{k + 1}")
+                    if self.location_number == (i, 7 - k):
+                        print(f"{self.name}:{self.value_to_key(i)}{8 - k}")
+                        self.piece_img = self.set_piece_img(piece_size=80)
 
     def value_to_key(self,value):
         for item in self.column_dict.items():
