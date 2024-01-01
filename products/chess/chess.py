@@ -48,6 +48,8 @@ class Piece:
         self.initialize_size()
         selected = 0
         result = 0
+        places = []
+        board.initialize_board_color()
         for i in range(8): 
             for k in range(8):
                 if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
@@ -56,25 +58,25 @@ class Piece:
                         self.piece_img = self.set_piece_img(piece_size = 90)
                         if selected == 0:
                             result = self
-                            self.get_can_move(board)
+                            places = self.get_can_move(board)
                         selected = 1
-        if selected == 0:
-            board.delete_color_part()
-        return (selected,result)
 
-    def move_piece(self, board):
+        return (selected,result, places)
+
+    def move_piece(self, board, places):
         self.initialize_size()
+        board.initialize_board_color()
         for i in range(8): 
             for k in range(8):
                 if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
-                    print(f"{self.name} moves to {self.value_to_key(i)}{8 - k}")
-                    self.location = f"{self.value_to_key(i)}{8 - k}"
-                    self.location_number = self.location_to_tuple(self.location)
-                    self.draw_piece(board.screen)
-                    board.delete_color_part()
-                else:
-                    board.delete_color_part()    
-                    
+                    if places:
+                        location_tuple = (i,7-k)
+                        for place in places:
+                            if location_tuple == place:
+                                self.location_number = place
+                                self.draw_piece(board.screen)
+                                print(f"{self.name} moves to {self.tuple_to_location(location_tuple)}")
+    
     def get_can_move(self, board):
         old_pos = self.location_number
         places = []
@@ -85,6 +87,7 @@ class Piece:
                 place_str = self.tuple_to_location(place)
                 print(f"{self.name} can move to {place_str}")
         board.color_part(places)
+        return places
 
 class King(Piece):
     def __init__(self,player,location):
@@ -179,7 +182,7 @@ class Board:
         for location_tuple in location_tuples:
             self.coloring_tuples.append((location_tuple[0],(7 - location_tuple[1])))
 
-    def delete_color_part(self):
+    def initialize_board_color(self):
         self.coloring_tuples = []
 
 class Game:
@@ -264,11 +267,11 @@ def main():
                         for vals in piece.values():
                             if chosen: break
                             for val in vals:
-                                chosen, selected_piece = val.choose_piece(board)
+                                chosen, selected_piece, places = val.choose_piece(board)
                                 if chosen: break
             else:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    selected_piece.move_piece(board)
+                    selected_piece.move_piece(board, places)
                     chosen = False
 
         board.draw_screen()  
