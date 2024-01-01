@@ -35,12 +35,15 @@ class Piece:
     def initialize_size(self):
         self.piece_img = self.set_piece_img()
 
-    def move_piece(self, board):
+    def move_piece(self, board, screen):
         self.initialize_size()
         for i in range(8): 
             for k in range(8):
                 if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
                     print(f"{self.name} moves to {self.value_to_key(i)}{8 - k}")
+                    self.location = f"{self.value_to_key(i)}{8 - k}"
+                    self.location_number = self.location_tuple()
+                    self.draw_piece(screen)
 
     def choose_piece(self, board):
         self.initialize_size()
@@ -219,11 +222,11 @@ def main():
                         for vals in piece.values():
                             if chosen: break
                             for val in vals:
-                                chosen,selected_piece = val.choose_piece(board)
+                                chosen, selected_piece = val.choose_piece(board)
                                 if chosen: break
             else:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    selected_piece.move_piece(board)
+                    selected_piece.move_piece(board, board.screen)
                     chosen = False
                     
 
