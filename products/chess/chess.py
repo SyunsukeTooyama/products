@@ -58,10 +58,11 @@ class Piece:
                             result = self
                             self.get_can_move(board)
                         selected = 1
-
+        if selected == 0:
+            board.delete_color_part()
         return (selected,result)
 
-    def move_piece(self, board, screen):
+    def move_piece(self, board):
         self.initialize_size()
         for i in range(8): 
             for k in range(8):
@@ -69,16 +70,21 @@ class Piece:
                     print(f"{self.name} moves to {self.value_to_key(i)}{8 - k}")
                     self.location = f"{self.value_to_key(i)}{8 - k}"
                     self.location_number = self.location_to_tuple(self.location)
-                    self.draw_piece(screen)
-    
+                    self.draw_piece(board.screen)
+                    board.delete_color_part()
+                else:
+                    board.delete_color_part()    
+                    
     def get_can_move(self, board):
         old_pos = self.location_number
+        places = []
         for val in self.move_value:
             if (8 > (old_pos[0] + val[0])) and (8 > (old_pos[1] + val[1])) and ((old_pos[0] + val[0]) >= 0) and ((old_pos[1] + val[1]) >= 0):
                 place = (old_pos[0] + val[0], old_pos[1] + val[1])
+                places.append(place)
                 place_str = self.tuple_to_location(place)
                 print(f"{self.name} can move to {place_str}")
-                board.color_part(place)
+        board.color_part(places)
 
 class King(Piece):
     def __init__(self,player,location):
@@ -144,7 +150,7 @@ class Board:
     def __init__(self):
         self.screen = pygame.display.set_mode((1280,720))
         self.rects = np.zeros([9,9,2])
-        self.coloring_tuple = tuple()
+        self.coloring_tuples = []
         for i in range(9):
             for k in range(9):
                 self.rects[i][k][0] = 340. + i * 75.
@@ -165,11 +171,16 @@ class Board:
                 else:
                     pygame.draw.rect(self.screen, "brown", (340 + 75 * i,60 + 75 * j, 75, 75)) 
         
-        if self.coloring_tuple:
-            pygame.draw.rect(self.screen, "blue", (340 + 75 * self.coloring_tuple[0],60 + 75 * self.coloring_tuple[1], 75, 75))
+        if len(self.coloring_tuples) > 0:
+            for coloring_tuple in self.coloring_tuples:
+                pygame.draw.rect(self.screen, "blue", (340 + 75 * coloring_tuple[0],60 + 75 * coloring_tuple[1], 75, 75))
     
-    def color_part(self, location_tuple):
-        self.coloring_tuple = (location_tuple[0],(7 - location_tuple[1]))
+    def color_part(self, location_tuples):
+        for location_tuple in location_tuples:
+            self.coloring_tuples.append((location_tuple[0],(7 - location_tuple[1])))
+
+    def delete_color_part(self):
+        self.coloring_tuples = []
 
 class Game:
     def __init__(self, turn = 0):
@@ -257,7 +268,7 @@ def main():
                                 if chosen: break
             else:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    selected_piece.move_piece(board, board.screen)
+                    selected_piece.move_piece(board)
                     chosen = False
 
         board.draw_screen()  
