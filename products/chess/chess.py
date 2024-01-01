@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import numpy as np
 import string
-import math
 
 # make piece class
 class Piece:
@@ -28,28 +27,37 @@ class Piece:
         
         return self.piece_img
 
-    def move_piece(self, board):
-        for i in range(8): 
-            for k in range(8):
-                if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
-                    print(f"{self.name}:{self.value_to_key(i)}{8 - k}")
-
+   
+                
     def draw_piece(self, screen):   
         screen.blit(self.piece_img,(340. + self.location_number[0] * 75, 60. + (7-self.location_number[1]) * 75))
 
     def initialize_size(self):
         self.piece_img = self.set_piece_img()
 
-    def choose_piece(self, board):
+    def move_piece(self, board):
         self.initialize_size()
         for i in range(8): 
             for k in range(8):
                 if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
-                    if self.location_number == (i, 7 - k):
-                        print(f"{self.name}:{self.value_to_key(i)}{8 - k}")
-                        self.piece_img = self.set_piece_img(piece_size = 90)
-                        return 1
+                    print(f"{self.name} moves to {self.value_to_key(i)}{8 - k}")
 
+    def choose_piece(self, board):
+        self.initialize_size()
+        selected = 0
+        result = 0
+        for i in range(8): 
+            for k in range(8):
+                if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
+                    if self.location_number == (i, 7 - k):
+                        print(f"{self.name} is selected at {self.value_to_key(i)}{8 - k}")
+                        self.piece_img = self.set_piece_img(piece_size = 90)
+                        if selected == 0:
+                            result = self
+                        selected = 1
+
+        return (selected,result)                    
+                  
     def value_to_key(self,value):
         for item in self.column_dict.items():
             if item[1] == value:
@@ -194,7 +202,7 @@ def main():
     board = Board()
     game = Game()
     pieces = game.initialize_game()
-    chosen = False
+    chosen = 0
 
     # draw window
     pygame.init()
@@ -204,14 +212,20 @@ def main():
             if event.type == pygame.QUIT: 
                 running = False
         
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if chosen == False:
+            if chosen == 0:
+                if event.type == pygame.MOUSEBUTTONDOWN:    
                     for piece in pieces:
+                        if chosen: break
                         for vals in piece.values():
+                            if chosen: break
                             for val in vals:
-                                chosen = val.choose_piece(board)
-                else:
-                    val.move_piece(board)
+                                chosen,selected_piece = val.choose_piece(board)
+                                if chosen: break
+            else:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    selected_piece.move_piece(board)
+                    chosen = False
+                    
 
         board.draw_screen()
 
