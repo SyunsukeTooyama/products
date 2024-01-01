@@ -9,15 +9,22 @@ class Piece:
         self.player = player
         self.location = location
         self.name = ""
-        self.column_dict = {"a": 0, "b": 1, "c": 2, "d":3, "e": 4, "f": 5, "g": 6, "h": 7}
-        self.location_number = self.location_tuple()
-        self.move_value = [0]
+        self.to_num_dict = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
+        self.to_alp_dict = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h"}
+        self.location_number = self.location_to_tuple(self.location)
+        self.move_value = [(0,0)]
 
-    def location_tuple(self):        
-        column = self.column_dict[self.location[0]]
-        row = int(self.location[1]) - 1 
+    def location_to_tuple(self, location):        
+        column = self.to_num_dict[location[0]]
+        row = int(location[1]) - 1 
 
         return (column, row)
+
+    def tuple_to_location(self, location_tuple):
+        column = self.to_alp_dict[location_tuple[0]]
+        row = location_tuple[1] + 1
+
+        return f"{column}{row}"
 
     def set_piece_img(self,piece_size=75):
         self.piece_img = pygame.image.load(f"pieces/{self.player}_{self.name}.png")
@@ -27,23 +34,16 @@ class Piece:
         
         return self.piece_img
 
-   
-                
+    def value_to_key(self,value):
+        for item in self.to_num_dict.items():
+            if item[1] == value:
+                return item[0]            
+
     def draw_piece(self, screen):   
         screen.blit(self.piece_img,(340. + self.location_number[0] * 75, 60. + (7-self.location_number[1]) * 75))
 
     def initialize_size(self):
         self.piece_img = self.set_piece_img()
-
-    def move_piece(self, board, screen):
-        self.initialize_size()
-        for i in range(8): 
-            for k in range(8):
-                if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
-                    print(f"{self.name} moves to {self.value_to_key(i)}{8 - k}")
-                    self.location = f"{self.value_to_key(i)}{8 - k}"
-                    self.location_number = self.location_tuple()
-                    self.draw_piece(screen)
 
     def choose_piece(self, board):
         self.initialize_size()
@@ -57,14 +57,28 @@ class Piece:
                         self.piece_img = self.set_piece_img(piece_size = 90)
                         if selected == 0:
                             result = self
+                            self.get_can_move()
                         selected = 1
 
-        return (selected,result)                    
-                  
-    def value_to_key(self,value):
-        for item in self.column_dict.items():
-            if item[1] == value:
-                return item[0]            
+        return (selected,result)
+
+    def move_piece(self, board, screen):
+        self.initialize_size()
+        for i in range(8): 
+            for k in range(8):
+                if (board.rects[i][k][0] < pygame.mouse.get_pos()[0] < board.rects[i+1][k][0]) and (board.rects[i][k][1] < pygame.mouse.get_pos()[1] < board.rects[i][k+1][1]):
+                    print(f"{self.name} moves to {self.value_to_key(i)}{8 - k}")
+                    self.location = f"{self.value_to_key(i)}{8 - k}"
+                    self.location_number = self.location_to_tuple(self.location)
+                    self.draw_piece(screen)
+    
+    def get_can_move(self):
+        old_pos = self.location_number
+        for val in self.move_value:
+            if (old_pos[0] + val[0]) >= 0 and (old_pos[1] + val[1]) >= 0:
+                place = (old_pos[0] + val[0], old_pos[1] + val[1])
+                place_str = self.tuple_to_location(place)
+                print(f"{self.name} can move to {place_str}")
 
 class King(Piece):
     def __init__(self,player,location):
@@ -72,7 +86,8 @@ class King(Piece):
         self.name = "king"
         self.value = 100
         self.piece_img = self.set_piece_img()
-        self.move_value = [-9, -8, -7, -1, 1, 7, 8, 9]
+        self.move_value = [(i,j) for i in range(-1,2) for j in range(-1,2)]
+        self.move_value.remove((0,0))
 
 class Queen(Piece):
     def __init__(self,player,location):
@@ -80,8 +95,8 @@ class Queen(Piece):
         self.name = "queen"
         self.value = 9
         self.piece_img = self.set_piece_img()
-        self.move_value = []
-        self.move_value = list(range(1,8)) + list(range(-1,-8,-1)) + list(range(8, 64, 8)) + list(range(-8, -64, -8)) +  list(range(9, 72, 9)) + list(range(-9, -72, -9)) + list(range(7, 56, 7)) + list(range(-7, -56, -7))
+        self.move_value = [(i,i) for i in range(-8,8)] + [(i,-i) for i in range(-8,8)] + [(i,0) for i in range(-8,8)] + [(0,i) for i in range(-8,8)]
+        self.move_value = [val for val in self.move_value if val != (0,0)]
 
 class Rook(Piece):
     def __init__(self,player,location):
@@ -90,6 +105,8 @@ class Rook(Piece):
         self.value = 5
         self.piece_img = self.set_piece_img()
         self.move_value = list(range(1,8)) + list(range(-1,-8,-1)) + list(range(8, 64, 8)) + list(range(-8, -64, -8))
+        self.move_value = [(i,0) for i in range(-8,8)] + [(0,i) for i in range(-8,8)]
+        self.move_value = [val for val in self.move_value if val != (0,0)]
 
 class Bishop(Piece):
     def __init__(self,player,location):
@@ -98,6 +115,8 @@ class Bishop(Piece):
         self.value = 3
         self.piece_img = self.set_piece_img()
         self.move_value = list(range(9, 72, 9)) + list(range(-9, -72, -9)) + list(range(7, 56, 7)) + list(range(-7, -56, -7))
+        self.move_value = [(i,i) for i in range(-8,8)] + [(i,-i) for i in range(-8,8)]
+        self.move_value = [val for val in self.move_value if val != (0,0)]
 
 class Knight(Piece):
     def __init__(self,player,location):
@@ -105,7 +124,8 @@ class Knight(Piece):
         self.name = "knight"
         self.value = 3
         self.piece_img = self.set_piece_img()
-        self.move_value = [-17, -14, -10, -6, 6, 10, 14, 17]
+        self.move_value = [(-1,-2),(-2,-1),(2,-1),(-2,1),(-1,2),(1,-2),(1,2),(2,1)]
+        self.move_value = [val for val in self.move_value if val != (0,0)]
 
 class Pawn(Piece):
     def __init__(self,player,location):
@@ -114,6 +134,10 @@ class Pawn(Piece):
         self.value = 1 
         self.piece_img = self.set_piece_img()
         self.move_value = [7, 8, 9, 16]
+        if self.player == "black":
+            self.move_value = [(0,-1)]
+        else:
+            self.move_value = [(0,1)]
 
 # make board class
 class Board:
