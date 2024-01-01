@@ -176,7 +176,7 @@ class Board:
         
         if len(self.coloring_tuples) > 0:
             for coloring_tuple in self.coloring_tuples:
-                pygame.draw.rect(self.screen, "blue", (340 + 75 * coloring_tuple[0],60 + 75 * coloring_tuple[1], 75, 75))
+                pygame.draw.rect(self.screen, Color(0,100,200,1), (341 + 75 * coloring_tuple[0], 61 + 75 * coloring_tuple[1], 73, 73))
     
     def color_part(self, location_tuples):
         for location_tuple in location_tuples:
