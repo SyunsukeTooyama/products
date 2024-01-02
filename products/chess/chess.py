@@ -185,6 +185,21 @@ class Board:
     def initialize_board_color(self):
         self.coloring_tuples = []
 
+    def board_filled(self, pieces):
+        black_positions = ""
+        white_positions = ""
+        for piece in pieces:
+            for vals in piece.values():
+                for val in vals:
+                    if val.player == "black":
+                        black_positions += val.location
+                    else:
+                        white_positions += val.location
+        print(black_positions)
+        print(white_positions)
+        return (black_positions,white_positions)
+
+
 class Game:
     def __init__(self, turn = 0):
         self.turn = turn
@@ -261,7 +276,8 @@ def main():
                 running = False
         
             if chosen == 0:
-                if event.type == pygame.MOUSEBUTTONDOWN:    
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    black_filled, white_filled = board.board_filled(pieces)    
                     for piece in pieces:
                         if chosen: break
                         for vals in piece.values():
